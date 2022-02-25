@@ -92,6 +92,7 @@ def login():
             login_user(UserTable.query.filter_by(username=user_form_data).first())
             return flask.redirect(flask.url_for("get_movie"))  # go to movie page
         else:
+            flask.flash("Invalid username, please register. ")
             return flask.redirect(flask.url_for("register"))  # otherwise go to register
     else:
         return flask.render_template("login.html")
