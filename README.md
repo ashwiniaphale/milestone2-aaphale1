@@ -37,9 +37,10 @@ The application is deployed on Heroku. We created a heroku database in order to 
 
 ## Main Changes in Milestone 2
 
-### Login & Register
+### Login & Register & Logout
 I created 2 HTML pages each with its own HTML form to login and register for the movie explorer. In app.py, I created corresponding app.route functions. The login page is the default page, and the user is asked if they want to login or register. If an invalid username is entered, they are given a message and redirected to the register page (using flask.redirect).
 The register page allows for a user to enter their name and if it is not taken, adds it to the database and redirects them to the movie page. 
+I added a logout feature as well that allows the user to change usernames if desired. 
 
 ### Ratings/Comments
 Likewise, there is a form in index.html prompting the user for their rating and commments on a movie. Included is a readonly movie id variable that lets the code know to what movie the ratings are connected to in the database. A rating and comment is added to the database and redirected to the movie page in which the movie id is queried and passed through the render_template function. 
@@ -61,20 +62,25 @@ I created two separate tables: a User table (for storing username information), 
 7. psql -h localhost  # this is just to test out that postgresql is installed okay - type "\q" to quit
 8. pip install psycopg2-binary
 9. pip install Flask-SQLAlchemy==2.1
+10. pip install flask-login
 #### Heroku Setup
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)  # install Homebrew
 brew tap heroku/brew && brew install heroku  # install Heroku CLI
+#### Adding to the .env file
+You would need to create a .env file within the project and add
+* export REALDATABASE_URL="name of your url"
+* add a new API key... API_KEY="your api key"
+* add a new secret key...app.secret_key="name of your secret key"
+#### How to run
+Type python or python3 app.py into your terminal once you are within the correct directory
 
-### What are 3 technical issues you encountered with your project? How did you fix them?
+### How implementing your project differed from your expectations during project planning?
 
-1. The biggest issue I had was circular imports. I initially had made 2 separate python files - one for the TMDB API and one for the Wiki API. I originially passed through movie id to every function made, however that caused me to have to import app.py into both files, and both files were already imported into app.py in order to call the functions. This caused a circular import error so I ended up moving the Wiki API function to tmdb.py and created a global "movies" variable that was the JSON response. 
-2. I struggled to fetch just the genres from the API. The output was a list of dictionaries, so I had to research how to only get the values from each dictionary. I ended up looping through the list and adding the values to a string separated by commas. 
-3. When creating the Wiki API function, I struggled on setting up the final article url. The Wiki API was much harder to understand and read than the TMDB one for me. At first I tried using the Info API to pull the full url from it. However, I needed the Wiki movie id, which I did not know how to get. I ended up creating a global movie JSON response variable, and was able to pass that through the function. Because of this variable, the Wiki API now knows what movie to search for.  
+1. I expected the login/register part of this project to be the easiest part during planning. It seemed like a quick add to the database and a simple redirect. Although in hindsight that is all it is, I struggled a lot during this part of the project. I started off with my register page being the first thing seen. Although I planned for this, it made a lot more sense logically to start with the login and then go from there. I start with my login and have a hyperlink to register if the user wants to do so. From there, the user can register and be redirected automatically. Or the user can enter the login info right away and be redirected. 
+2. Another planning gone wrong situation was my reviews/commenets. I originally had planned for everything to be within the same table because it made more sense to have everything be called from one table. Soon realizing that was not going to work, I made two separate tables and that made things a lot simpler. I was trying to add the username from the user table in the comments table, but I could just add a current_username column in the comments table. This made using flask_login a lot simpler, and I better understand database schema more now. 
 
-### What are known problems, if any, with your project?
+### Technical Issues and How I Solved Them
 
-My project meets all the requirements!
+1. A big technical barrier for me was using and incorporating flask login. I asked around a bit and someone pointed me towards a flask's documentation (searching flask-login online). That helped A LOT. I incorporated the necessary imports and default lines that needed to be in the code such as: login_manager.init_app(app). After this the logic needed to play a role. Once I realized what I was doing, it was very simple to just login_user after my conditional statement about being added to the database. I looked up on stack overflow ("how to login user using flask login") for an example of that as well, and attended the Wednesday workshop where someone helped me read through that code. I was even able to add a logout button :)
+2. Another problem I had was a struggle to deploy to heroku. I had forgotten to put in my API_KEY and secret key within heroku and had searched awhile on the internet regarding my "Keyerror: title" error. I got that error a lot after Milestone 1 so it clicked that it was related to the API, and that was how I realized I never passed through my API key. Also, I recieved this error: sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres. I saw John's comment on discord about this, but was still confused. I asked someone to clarify what he meant by that and realized that I needed to rename DATABASE_URL and readd it to heroku because heroku was passing through postgres and not postgresql. 
 
-### What would you do to improve your project in the future?
-
-By talking to some classmates, I realized that it would have been much easier to have 2 separate functions to get the movie data and to get the Wikipedia data. I did not realize in python that you are able to return multiple variables in one line. Because of this assumption, I separated my details into multiple functions. 
