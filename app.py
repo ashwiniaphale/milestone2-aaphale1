@@ -23,7 +23,7 @@ from api import get_title, get_tagline, get_genre, get_image, get_wiki_page
 
 app = flask.Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("app.secret_key")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("REALDATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
