@@ -71,7 +71,13 @@ You would need to create a .env file within the project and add
 * export REALDATABASE_URL="name of your url"
 * add a new API key... API_KEY="your api key"
 * add a new secret key...app.secret_key="name of your secret key"
-#### How to run
+#### How to make database
+* git init, add + commit all changed files with git
+* heroku login -i
+* heroku create
+* heroku addons:create heroku-postgresql:hobby-dev
+* heroku config -- to get database_url and change it to REALDATABASE_URL and change postgres to postgresql
+#### How to run app
 Type python or python3 app.py into your terminal once you are within the correct directory
 
 ### How implementing your project differed from your expectations during project planning?
