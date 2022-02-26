@@ -17,7 +17,7 @@ Within this file I imported these libraries: os, random, flask, requests, and tm
 * The requests library allows us to send HTTP requests using python. 
 * I also needed to import all the methods written for API calls into app.py so they could be easily called and rendered to the HTML file. 
 * I used flask_sqlalchemy to get SQLAlchemy, the extension for flask that makes it simple to do commmon tasks with a database in python. 
-* I used flask_login and its methods in order to provide user session management for my project. 
+* I used flask_login and its classes, methods, variables in order to provide user session management for my project. 
 
 I have two methods in this file: get_random_movie and get_movie. get_random_movie randomizes the movie id and builds the movie base url and configures the json. It is then called in get_movie (the routed function). In this function, we return flask.render_template which sends all my method calls to the HTML file. We then call app.run and include a host and a port so it can be deployed in Heroku.
 
