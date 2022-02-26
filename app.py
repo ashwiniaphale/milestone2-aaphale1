@@ -7,6 +7,8 @@
 # pylint: disable=global-variable-undefined
 # pylint: disable=bad-whitespace
 # pylint: disable=no-member
+# pylint: disable=missing-class-docstring
+
 import os
 import random
 import flask
